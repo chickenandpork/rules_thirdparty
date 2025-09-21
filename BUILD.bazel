@@ -1,0 +1,32 @@
+load("@buildifier_prebuilt//:rules.bzl", "buildifier")
+load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
+load("@rules_pkg//pkg:verify_archive.bzl", "verify_archive_test")
+
+buildifier(
+    name = "buildifier.fix",
+    lint_mode = "fix",
+    mode = "fix",
+)
+
+buildifier(
+    name = "buildifier.check",
+    lint_mode = "warn",
+    lint_warnings = [
+        "-module-docstring",
+    ],
+    mode = "check",
+)
+
+alias (name="dnsmasq", actual = "@dnsmasq//:dnsmasq")
+pkg_tar(
+    name = "dnsmasq_tar",
+    srcs = [":dnsmasq"],
+    package_dir = "bin",
+)
+
+verify_archive_test(
+    name = "confirm_dnsmasq_short_path",
+    must_contain = [ "bin/dnsmasq" ],
+    tags = [ "no-cache" ],
+    target = ":dnsmasq_tar",
+)
