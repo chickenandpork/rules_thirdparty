@@ -1,5 +1,5 @@
 module(
-    name = "rules_thirdparty",
+    name = "bazel_thirdparty",
     version = "0.0.1",
 )
 
