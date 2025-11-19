@@ -1,4 +1,4 @@
-# rules_thirdparty
+# bazel_thirdparty
 
 Some third-party stuff in Bazel.  Maybe.  Let's see.
 
