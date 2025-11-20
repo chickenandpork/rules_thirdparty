@@ -23,7 +23,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest]
+        # incompatible builds are flagged off with `target_comparible_with`
+        os: [ubuntu-24.04-arm, ubuntu-24.04, macos-15-intel, macos-latest]
 
     steps:
       -

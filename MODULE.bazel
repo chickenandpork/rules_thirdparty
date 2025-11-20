@@ -5,17 +5,41 @@ module(
 
 bazel_dep(name = "aspect_bazel_lib", version = "2.21.2")
 bazel_dep(name = "bazel_skylib", version = "1.8.2")
+bazel_dep(name = "hermetic_cc_toolchain", version = "4.0.1")
 bazel_dep(name = "platforms", version = "1.0.0")
 bazel_dep(name = "rules_foreign_cc", version = "0.15.1")
 bazel_dep(name = "rules_pkg", version = "1.1.0")
 
 bazel_dep(name = "buildifier_prebuilt", version = "8.2.1", dev_dependency = True)
 
+toolchains = use_extension("@hermetic_cc_toolchain//toolchain:ext.bzl", "toolchains")
+toolchains.exec_platform(
+    arch = "amd64",
+    os = "linux",
+)
+toolchains.exec_platform(
+    arch = "arm64",
+    os = "linux",
+)
+toolchains.exec_platform(
+    arch = "amd64",
+    os = "macos",
+)
+toolchains.exec_platform(
+    arch = "arm64",
+    os = "macos",
+)
+use_repo(toolchains, "zig_sdk")
+
+register_toolchains(
+    "@zig_sdk//toolchain/...",
+    "@zig_sdk//libc_aware/toolchain/...",
+)
 
 http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_archive(
-    name="dnsmasq",
+    name = "dnsmasq",
     build_file = "//thirdparty/dnsmasq:BUILD.dnsmasq.bazel",
     #integrity = "sha256-9iJoKEizNnetsratCCZGGKKuCgHaSGqT/YzZEYaz0VM=",
     sha256 = "f622682848b33677adb2b6ad08264618a2ae0a01da486a93fd8cd91186b3d153",
@@ -24,4 +48,3 @@ http_archive(
         "https://thekelleys.org.uk/dnsmasq/dnsmasq-2.91.tar.xz",
     ],
 )
-

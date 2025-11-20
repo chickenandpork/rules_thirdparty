@@ -17,7 +17,11 @@ buildifier(
     mode = "check",
 )
 
-alias (name="dnsmasq", actual = "@dnsmasq//:dnsmasq")
+alias(
+    name = "dnsmasq",
+    actual = "@dnsmasq//:dnsmasq",
+)
+
 pkg_tar(
     name = "dnsmasq_tar",
     srcs = [":dnsmasq"],
@@ -26,7 +30,7 @@ pkg_tar(
 
 verify_archive_test(
     name = "confirm_dnsmasq_short_path",
-    must_contain = [ "bin/dnsmasq" ],
-    tags = [ "no-cache" ],
+    must_contain = ["bin/dnsmasq"],
+    tags = ["no-cache"],
     target = ":dnsmasq_tar",
 )
